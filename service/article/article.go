@@ -8,7 +8,7 @@ import (
 
 type ArticleRepository interface {
 	FindByID(ctx context.Context, id int) (model.Article, error)
-	FindAll(ctx context.Context, limit int, offset int) ([]model.Article, error)
+	FindAll(ctx context.Context, limit int, offset int, status string) ([]model.Article, error)
 	Create(ctx context.Context, article *model.Article) error
 	Update(ctx context.Context, id int, article *model.Article) error
 	Delete(ctx context.Context, id int) error
@@ -26,8 +26,8 @@ func (s *ArticleService) FindByID(ctx context.Context, id int) (model.Article, e
 	return s.Repo.FindByID(ctx, id)
 }
 
-func (s *ArticleService) FindAll(ctx context.Context, limit int, offset int) ([]model.Article, error) {
-	return s.Repo.FindAll(ctx, limit, offset)
+func (s *ArticleService) FindAll(ctx context.Context, limit int, offset int, status string) ([]model.Article, error) {
+	return s.Repo.FindAll(ctx, limit, offset, status)
 }
 
 func (s *ArticleService) Create(ctx context.Context, article *model.Article) error {

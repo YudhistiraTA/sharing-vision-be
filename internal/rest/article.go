@@ -2,6 +2,7 @@ package rest
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -83,8 +84,14 @@ func (h *Handler) GetArticles(w http.ResponseWriter, r *http.Request) {
 		response.WriteError(w, response.ErrInvalidRequest, "Invalid offset", nil)
 		return
 	}
-	articles, err := h.as.FindAll(r.Context(), limit, offset)
+	status := r.URL.Query().Get("status")
+	if status != "" && status != "Publish" && status != "Draft" && status != "Trash" {
+		response.WriteError(w, response.ErrInvalidRequest, "Invalid status", nil)
+		return
+	}
+	articles, err := h.as.FindAll(r.Context(), limit, offset, status)
 	if err != nil {
+		fmt.Println(err.Error())
 		response.WriteError(w, err, "Failed to get articles", nil)
 		return
 	}

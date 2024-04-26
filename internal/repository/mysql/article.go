@@ -39,13 +39,24 @@ func (r *ArticleRepository) Delete(ctx context.Context, id int) (err error) {
 	return
 }
 
-func (r *ArticleRepository) FindAll(ctx context.Context, limit int, offset int) (res []model.Article, err error) {
-	query := "SELECT id, title, content, category, created_at, updated_at, status FROM posts LIMIT ? OFFSET ?"
+func (r *ArticleRepository) FindAll(ctx context.Context, limit int, offset int, status string) (res []model.Article, err error) {
+	baseQuery := "SELECT id, title, content, category, created_at, updated_at, status FROM posts"
+	var query string
+	var args []interface{}
+
+	if status != "" {
+		query = baseQuery + " WHERE status LIKE ? LIMIT ? OFFSET ?"
+		args = append(args, status, limit, offset)
+	} else {
+		query = baseQuery + " LIMIT ? OFFSET ?"
+		args = append(args, limit, offset)
+	}
+
 	stmt, err := r.DB.PrepareContext(ctx, query)
 	if err != nil {
 		return
 	}
-	rows, err := stmt.QueryContext(ctx, limit, offset)
+	rows, err := stmt.QueryContext(ctx, args...)
 	if err != nil {
 		return
 	}
