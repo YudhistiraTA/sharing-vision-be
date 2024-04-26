@@ -2,7 +2,6 @@ package rest
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -91,7 +90,6 @@ func (h *Handler) GetArticles(w http.ResponseWriter, r *http.Request) {
 	}
 	articles, err := h.as.FindAll(r.Context(), limit, offset, status)
 	if err != nil {
-		fmt.Println(err.Error())
 		response.WriteError(w, err, "Failed to get articles", nil)
 		return
 	}
