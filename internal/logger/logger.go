@@ -91,9 +91,9 @@ func NewLoggingMiddleware(log *zap.Logger) func(http.Handler) http.Handler {
 			}
 
 			if sw.status >= 200 && sw.status < 300 {
-				nextLog.Info("Request success", methodLog, pathLog, ipLog, timeLog, statusLog)
+				nextLog.Info("Request success", timeLog, statusLog)
 			} else {
-				nextLog.Info("Request failed", methodLog, pathLog, ipLog, timeLog, statusLog, zapcore.Field{
+				nextLog.Info("Request failed", timeLog, statusLog, zapcore.Field{
 					Key:    "error response",
 					Type:   zapcore.StringType,
 					String: sw.body.String(),
