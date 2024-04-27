@@ -45,10 +45,10 @@ func (r *ArticleRepository) FindAll(ctx context.Context, limit int, offset int, 
 	var args []interface{}
 
 	if status != "" {
-		query = baseQuery + " WHERE status LIKE ? LIMIT ? OFFSET ?"
+		query = baseQuery + " WHERE status LIKE ? ORDER BY updated_at DESC LIMIT ? OFFSET ?"
 		args = append(args, status, limit, offset)
 	} else {
-		query = baseQuery + " LIMIT ? OFFSET ?"
+		query = baseQuery + " ORDER BY updated_at DESC LIMIT ? OFFSET ?"
 		args = append(args, limit, offset)
 	}
 
